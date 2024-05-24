@@ -1,0 +1,15 @@
+{
+  "name": "sdk-ts-example-react",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10"
+  },
+  "dependencies": {
+    "@adhese/sdk": "^0.9.0"
+  }
+}
