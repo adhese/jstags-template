@@ -26,11 +26,10 @@ jobs:
 
       - name: Build package
         run: npm run build
-      
-      - name: Set correct repo
-        run: npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
 
       - name: Publish package
-        run: npm publish
+        run: |
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
