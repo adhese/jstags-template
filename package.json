@@ -1,6 +1,5 @@
 {
   "name": "jstags_template",
-  "private": true,
   "type": "module",
   "scripts": {
     "build": "tsc && vite build"
