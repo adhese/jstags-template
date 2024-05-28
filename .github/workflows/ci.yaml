@@ -29,7 +29,6 @@ jobs:
 
       - name: Publish package
         run: |
-          cat .npmrc
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
