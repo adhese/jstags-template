@@ -4,6 +4,9 @@
     "publishConfig": {
       "registry": "https://npm.pkg.github.com"
     },
+    "scripts": {
+      "build": "tsc && vite build"
+    },
     "repository": {
       "url": "git+https://github.com/adhese/jstags_template.git"
     }
