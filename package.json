@@ -1,6 +1,6 @@
 {
     "name": "@adhese/jstags_template",
-    "version": "1.0.0",
+    "version": "$VERSION",
     "publishConfig": {
       "registry": "https://npm.pkg.github.com"
     },
