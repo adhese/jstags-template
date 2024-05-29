@@ -1,13 +1,21 @@
 {
-    "name": "@adhese/jstags_template",
-    "version": "$VERSION",
-    "publishConfig": {
-      "registry": "https://npm.pkg.github.com"
-    },
-    "scripts": {
-      "build": "tsc && vite build"
-    },
-    "repository": {
-      "url": "git+https://github.com/adhese/jstags_template.git"
-    }
+  "name": "@adhese/jstags_template",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "version": "$VERSION",
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10"
+  },
+  "dependencies": {
+    "@adhese/sdk": "^0.9.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "url": "git+https://github.com/adhese/jstags_template.git"
   }
+}
