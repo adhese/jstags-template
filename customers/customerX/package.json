@@ -1,5 +1,5 @@
 {
-  "name": "@adhese/jstags_template",
+  "name": "@adhese/jstags-customerx",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build"

@@ -4,14 +4,30 @@ on:
   workflow_dispatch:
 
 jobs:
+  set_customers:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - id: customers
+      run: echo "customers=$(ls -d customers/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
+
   release:
-    runs-on: ubuntu-22.04
+    needs: set_customers
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        customer: ${{ fromJson(needs.set_customers.outputs.customers) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Change directory
+        run: cd customer/${{ customer }}
 
       - name: Setup node
         uses: actions/setup-node@v4
