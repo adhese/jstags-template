@@ -4,24 +4,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  set_customers:
+  set-customers:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
     - id: customers
-      run: echo "customers=$(ls -d customers/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
+      run: echo "customers=$(ls customers/* | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
 
   release:
-    needs: set_customers
+    needs: set-customers
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     strategy:
       matrix:
-        customer: ${{ fromJson(needs.set_customers.outputs.customers) }}
+        customer: ${{ fromJson(needs.set-customers.outputs.customers) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
