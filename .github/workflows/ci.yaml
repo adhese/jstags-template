@@ -24,19 +24,18 @@ jobs:
     strategy:
       matrix:
         customer: ${{ fromJson(needs.set-customers.outputs.customers) }}
+    defaults:
+      run:
+        working-directory: customers/${{ matrix.customer }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Change directory
-        run: cd customers/${{ matrix.customer }}
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'customers/${{ matrix.customer }}/package-lock.json' # THIS PATTERN did the trick for me.
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies
