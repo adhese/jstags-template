@@ -35,7 +35,6 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'customers/${{ matrix.customer }}/package-lock.json' # THIS PATTERN did the trick for me.
           registry-url: 'https://npm.pkg.github.com'
-          working-directory: customers/${{ matrix.customer }}
 
       - name: Install dependencies
         run: npm ci
