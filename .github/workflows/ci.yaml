@@ -6,6 +6,8 @@ on:
 jobs:
   set-customers:
     runs-on: ubuntu-latest
+    outputs:
+      customers: ${{ steps.customers.outputs.customers }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
