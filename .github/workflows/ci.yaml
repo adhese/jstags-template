@@ -48,7 +48,7 @@ jobs:
         run: |
           sed -i "s/\$VERSION/$(date +'0.%Y%m%d.%H%M%S')/g" package.json
           sed -i "s/\$NAME/@${{ github.repository_owner }}\/jstags-${{ matrix.customer }}/g" package.json
-          sed -i "s/\$REPOSITORY/${{ github.repository }}/g" package.json
+          sed -i "s|\$REPOSITORY|${{ github.repository }}|g" package.json
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
