@@ -1,5 +1,5 @@
 {
-  "name": "@adhese/jstags-customery",
+  "name": "$NAME",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build"
@@ -16,6 +16,6 @@
     "registry": "https://npm.pkg.github.com"
   },
   "repository": {
-    "url": "git+https://github.com/adhese/jstags_template.git"
+    "url": "git+https://github.com/$REPOSITORY.git"
   }
 }
