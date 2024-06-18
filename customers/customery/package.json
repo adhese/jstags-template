@@ -20,6 +20,6 @@
     "url": "git+https://github.com/$REPOSITORY.git"
   },
   "files": [
-    "dist/*"
+    "dist"
   ]
 }
