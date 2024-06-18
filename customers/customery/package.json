@@ -14,7 +14,7 @@
     "@adhese/sdk": "^1.0.2"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "$NAMESPACE:registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "url": "git+https://github.com/$REPOSITORY.git"
