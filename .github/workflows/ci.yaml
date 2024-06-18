@@ -54,5 +54,5 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: customers/${{ matrix.customer }}/dist
+        working-directory: customers/${{ matrix.customer }}
 
