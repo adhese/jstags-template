@@ -2,6 +2,7 @@ import {defineConfig} from "vite";
 
 export default defineConfig({
   build: {
+    outDir: '/',
     minify: 'terser',
     terserOptions: {
       compress: {

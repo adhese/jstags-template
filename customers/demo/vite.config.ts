@@ -2,6 +2,7 @@ import {defineConfig} from "vite";
 
 export default defineConfig({
   build: {
+    outDir: '/',
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -12,7 +13,7 @@ export default defineConfig({
       entry: 'src/main.ts',
       name: 'adhese',
       formats: ['umd'],
-      fileName: () => `demo.js`,
+      fileName: () => `Adhese.js`,
     }
   }
 })
