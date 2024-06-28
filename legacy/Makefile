@@ -1,7 +1,7 @@
 ignore:
 #
 
-CUSTOMERS :=
+CUSTOMERS := adswag betsson bionic businessinsider candid cavai dazn dpgmedia gamemania groupm igmn mannenmedia massarius newskoolmedia nrcmedia ster unibet
 
 RELEASES := $(CUSTOMERS:%=%-release)
 
