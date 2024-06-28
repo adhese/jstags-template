@@ -43,7 +43,7 @@ jobs:
 
     - id: env
       run:
-        echo "env=${{ inputs.env || 'prod' }" >> ${GITHUB_OUTPUT}
+        echo "env=${{ inputs.env || 'prod' }}" >> ${GITHUB_OUTPUT}
 
     - id: version
       run:
