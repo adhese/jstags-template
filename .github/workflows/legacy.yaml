@@ -1,0 +1,65 @@
+name: Publish legacy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  set-variables:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: legacy
+    outputs:
+      customers: ${{ steps.customers.outputs.customers }}
+      version: ${{ steps.customers.outputs.version }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - id: customers
+      run: echo "customers=$(make -s print-customers | jq --raw-input --slurp --compact-output 'split(" ")[:-1]')" >> ${GITHUB_OUTPUT}
+
+    - id: version
+      run:
+        echo "version=$(date +'0.%Y%m%d.%H%M%S')" >> ${GITHUB_OUTPUT}
+
+  release:
+    needs: set-variables
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: legacy
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        customer: ${{ fromJson(needs.set-variables.outputs.customers) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install build tools
+        run: ./install_build_tools.sh
+
+      - name: Build package
+        run: ./build.sh
+        env:
+          customers: ${{ matrix.customer }}
+
+      - name: Publish package
+        run: |
+          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
+          ./push_tag_to_npm.sh
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          customers: ${{ matrix.customer }}
+          package_namespace: "@${{ github.repository_owner }}"
+          author: ${{ github.repository_owner }}
+          repository: "git+https://github.com/${{ github.repository }}"
+          version: ${{ needs.set-variables.outputs.version }}
+          package_name_prefix: ${{ github.event.repository.name }}-

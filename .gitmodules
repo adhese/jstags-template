@@ -1,0 +1,3 @@
+[submodule "legacy/sdk"]
+	path = legacy/sdk
+	url = https://github.com/adhese/sdk.git
