@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - poc
 
 jobs:
   set-variables:

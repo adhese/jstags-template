@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Adhese audience control</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container > * {
+            margin: 10px 0;
+        }
+
+        #table {
+            width: 100%;
+        }
+        #table th {
+            text-align: left;
+        }
+        #table td {
+            padding: 5px;
+        }
+
+
+
+    </style>
+
+        
+<body>
+
+    <script type="text/javascript">
+        var AdheseAjax = {
+        request: function(ops) {
+            if(typeof ops == 'string') ops = { url: ops };
+            ops.url = ops.url || '';
+            ops.method = ops.method || 'get'
+            ops.data = ops.data || {};
+            if(typeof ops.encodeData == "undefined"){
+                ops.encodeData = true;
+            }
+            var getParams = function(data, url) {
+                var arr = [], str;
+                for(var name in data) {
+                    arr.push(name + '=' + encodeURIComponent(data[name]));
+                }
+                str = arr.join('&');
+                if(str != '') {
+                    return url ? (url.indexOf('?') < 0 ? '?' + str : '&' + str) : str;
+                }
+                return '';
+            }
+            var api = {
+                host: {},
+                process: function(ops) {
+                    var self = this;
+                    this.xhr = null;
+
+                    if (document.all && !window.atob) { // IE9 and older
+                        try {
+                            this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
+                        }
+                        catch(e) {
+                            try {
+                                this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                            }
+                            catch (e) {this.xhr = false; }
+                        }
+                    } else {
+                        try {
+                            this.xhr = new XMLHttpRequest();
+                        }
+                        catch (e) {
+                            this.xhr = false;
+                        }
+                    }
+
+                    if(this.xhr) {
+                        if ("withCredentials" in this.xhr) {
+                            this.xhr.withCredentials = true;
+                        }
+                        this.xhr.onreadystatechange = function() {
+                            if(self.xhr.readyState == 4 && self.xhr.status == 200) {
+                                var result = self.xhr.responseText;
+                                if(ops.json === true && typeof JSON != 'undefined') {
+                                    if (result){
+                                        try{
+                                            result = JSON.parse(result);
+                                            self.doneCallback && self.doneCallback.apply(self.host, [result, self.xhr]);
+                                        }catch(e){
+                                            self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: " + e]);
+                                        }
+                                    }else {
+                                        self.errorCallback && self.errorCallback.apply(self.host, ["Adhese Ajax: Response is empty string"]);
+                                    }
+                                }
+                            } else if(self.xhr.readyState == 4) {
+                                self.failCallback && self.failCallback.apply(self.host, [self.xhr]);
+                            }
+                            self.alwaysCallback && self.alwaysCallback.apply(self.host, [self.xhr]);
+                        }
+                    }
+                    if(ops.method == 'get') {
+                        this.xhr.open("GET", ops.url + getParams(ops.data, ops.url), true);
+                    } else {
+                        this.xhr.open(ops.method, ops.url, true);
+                        this.setHeaders({
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-type': 'application/x-www-form-urlencoded'
+                        });
+                    }
+                    if(ops.headers && typeof ops.headers == 'object') {
+                        this.setHeaders(ops.headers);
+                    }
+                    setTimeout(function() {
+                        if(ops.method == 'get'){
+                            self.xhr.send()
+                        }else{
+                            var data;
+                            if (ops.encodeData) {
+                            data = getParams(ops.data);
+                        }else {
+                            data = ops.data;
+                        }
+                        self.xhr.send(data);
+                    }
+                    }, 20);
+                    return this;
+                },
+                done: function(callback) {
+                    this.doneCallback = callback;
+                    return this;
+                },
+                fail: function(callback) {
+                    this.failCallback = callback;
+                    return this;
+                },
+                always: function(callback) {
+                    this.alwaysCallback = callback;
+                    return this;
+                },
+                error: function(callback) {
+                    this.errorCallback = callback;
+                    return this;
+                },
+                setHeaders: function(headers) {
+                    for(var name in headers) {
+                        this.xhr && this.xhr.setRequestHeader(name, headers[name]);
+                    }
+                }
+            }
+            return api.process(ops);
+        }
+    }
+
+    var audienceSuggestions = ['laptops', 'televisies', 'scheerapparaten', 'smartphones'];
+
+
+    //function to get input from the user
+    function getUserId() {
+        var input = document.getElementById("userId").value;
+        return input;
+    }
+
+    var removeElement = function(elementId) {
+        var el = document.getElementById(elementId);
+        while (el.firstChild) {
+            el.removeChild(el.firstChild);
+        }
+    };
+
+    var visualiseAudience = function(audience) {
+        var table = document.getElementById('table');
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        var tdButton = document.createElement('td');
+        var button = document.createElement('button');
+        button.innerHTML = 'Remove';
+        button.onclick = function() {
+            setAudience(audience, 0);
+        }
+        tdButton.appendChild(button);
+        td.innerHTML = audience;
+        tr.id = audience;
+        tr.appendChild(td);
+        tr.appendChild(tdButton);
+        table.appendChild(tr);
+    }
+
+    var visualiseAudienceSuggestions = function(audience) {
+        var table = document.getElementById('interest-table');
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        var tdButton = document.createElement('td');
+        var button = document.createElement('button');
+        button.innerHTML = 'Add';
+        button.onclick = function() {
+            setAudience(audience, 43200);
+            removeElement(audience);
+            visualiseAudience(audience);
+        }
+        tdButton.appendChild(button);
+        td.innerHTML = audience;
+        tr.id = audience;
+        tr.appendChild(td);
+        tr.appendChild(tdButton);
+        table.appendChild(tr);
+    }
+
+    var setAudience = function(audience, ttl) {
+            removeElement(audience);
+            var uri = "https://aa.tweakers.nl/usersync/handlers/dpg_tweakers/user_sync?id="+ audience + "&u=" + getUserId() + "&ttl=" + ttl;
+            AdheseAjax.request({
+                url: uri,
+                method: 'get',
+                json: true
+            })
+            .done(function(result) {       
+                //console.log('removed user from audience', audience);
+                //removeElement(audience);
+            })
+        }
+
+        var lookupAudiencesForUser = function() {
+            //do adrequest to user sync slot
+            removeElement("table");
+            var adUri = "https://aa.tweakers.nl/json/sluser_sync-1x1/tlall/uu" + getUserId() + "/?t=" + new Date().getTime();
+            AdheseAjax.request({
+                url: adUri,
+                method: 'get',
+                json: true
+            })
+            .done(function(result) {
+                for (var i = result.length - 1; i >= 0; i--) {
+                    //this adslot should return all audiences split by ; as body
+                    var audiences = result[0].body.split(';');
+                    if (audiences[0].length) {
+                        for (var j = 0; j < audiences.length; j++) {
+                                visualiseAudience(audiences[j]);
+                        }
+                    } else {
+                        //show some suggestions if user does not belong to any audiences.
+                        var noAudienceText = document.getElementById('no-audience-text');
+                        noAudienceText.style.display = 'block';
+                        for (var j = 0; j < audienceSuggestions.length; j++) {
+                                visualiseAudienceSuggestions(audienceSuggestions[j]);
+                        }
+
+                    }
+                }
+            })
+        };
+    </script>
+
+    <!-- input field for a user to enter user id -->
+    <p>Check and manage the audience(s) you belong to</p>
+    user id:
+    <input type="text" id="userId" placeholder="aSpPWDaoSts0VOTrzeVr" value="aSpPWDaoSts0VOTrzeVr">
+    <!-- button to start lookup -->
+    <button onclick="lookupAudiencesForUser()">Lookup</button>
+    <table style="width:50%" id="table"></table> 
+
+
+    <p id="no-audience-text" style="display:none"> You currently do not belong to any audiences. Here are some subjects you might be interested in:</p>
+    <table style="width:50%" id="interest-table"></table>
+</body>
+
+</head>
+</html>
