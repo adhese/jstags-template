@@ -878,6 +878,15 @@ AdheseGateway.createAdheseSlots = function (slots, roulartaConfig) {
 };
 
 AdheseGateway.init = function (roulartaConfig) {
+  if (!roulartaConfig) {
+    return;
+  }
+  if (roulartaConfig.options.disableAds) {
+    return;
+  }
+  if (roulartaConfig.data.domain.includes("www.")) {
+    roulartaConfig.data.domain = roulartaConfig.data.domain.replace("www.", "");
+  }
   //check deviceType
   AdheseGateway.deviceType = AdheseGateway.getDeviceType();
   //first we pick all slots based on device type
@@ -901,6 +910,10 @@ AdheseGateway.init = function (roulartaConfig) {
     }
   };
   AdheseGateway.getConsentData(callBack);
+
+  if (window.location.href.includes("forceads=true")) {
+    AdheseGateway.createGamSlots(slots, roulartaConfig);
+  }
 };
 AdheseGateway.loadScript(
   "https://securepubads.g.doubleclick.net/tag/js/gpt.js"

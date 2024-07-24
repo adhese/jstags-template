@@ -146,14 +146,14 @@ function initAdhese() {
             adheseData.segment
               .toLowerCase()
               .replace(/ /g, "")
-              .replace(/-/g, ""),
+              .replace(/-/g, "")
           ],
         ]);
       if (adheseData && adheseData.topics) {
         var topics = adheseData.topics.map(function (topic) {
           return topic.replace(/-/g, "_").toLowerCase();
         });
-        targetArray.push(["tp", [topics]]);
+        targetArray.push(["tp", [topics.join(";")]]);
       }
       if (typeof getCookie("adhblck") !== undefined)
         targetArray.push(["ab", [getCookie("adhblck")]]);
@@ -172,6 +172,14 @@ function initAdhese() {
           targetArray.push(["ut", [getQueryStringFromUrl("utm_term")]]);
         if (w.includes("utm_content"))
           targetArray.push(["uo", [getQueryStringFromUrl("utm_content")]]);
+      }
+      // get rayn targets
+      var raynData = getStoredRaynData();
+      if (raynData && raynData.personaIds) {
+        targetArray.push(["rp", [raynData.personaIds.join(";")]]);
+      }
+      if (raynData && raynData.audienceCategoryIds) {
+        targetArray.push(["ra", [raynData.audienceCategoryIds.join(";")]]);
       }
       //register targets
       for (var c = 0; c < targetArray.length; c++) {
@@ -436,7 +444,8 @@ function initAdhese() {
       return "friendlyIframe";
     } else if (
       adMarkup.includes("weborama") ||
-      adMarkup.includes("nookie.io")
+      adMarkup.includes("nookie.io") || 
+      adMarkup.includes("cavai")
     ) {
       return "friendlyIframe";
     } else if (ad && typeof ad.ext !== "undefined" && ad.ext == "advar") {
@@ -1278,6 +1287,59 @@ function initAdhese() {
   } catch (e) {
     console.log(e);
   }
+
+  // Load the Rayn script
+  (function (d, s, id) {
+    var js,
+      rjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement(s);
+    js.id = id;
+    js.src =
+      "https://wrappers.prod.rayn.io/connections/dcf0ca5c-c6a5-4e74-ad5f-fc582b2fb67d/bundle.js";
+    js.onload = function () {
+      fetchRaynData();
+    };
+    rjs.parentNode.insertBefore(js, rjs);
+  })(document, "script", "rayn-js");
+
+  // Function to call Rayn API functions and store results
+  async function fetchRaynData() {
+    try {
+      // Fetch data from Rayn API
+      const contentCategoryIds = await raynJS.getContentCategoryIds(true);
+      const audienceCategoryIds = await raynJS.getAudienceCategoryIds();
+      const personaIds = await raynJS.getPersonaIds();
+
+      // Store the results in an object
+      const raynData = {
+        contentCategoryIds,
+        audienceCategoryIds,
+        personaIds,
+      };
+
+      // Store raynData in localStorage
+      localStorage.setItem("raynData", JSON.stringify(raynData));
+      // log content category ids server side by calling  https://content1.nrc.nl/usersync/handlers/rayn_contextual/user_sync?id=[event]&u=[user]&ttl=43200
+      const contentCategoryIdsString = contentCategoryIds.join(";");
+      const userId = btoa(window.location.href);
+      const contentSyncUrl = `https://content1.nrc.nl/usersync/handlers/rayn_contextual/user_sync?id=${contentCategoryIdsString}&u=${userId}&ttl=43200`;
+      // do a fetch to the user sync url
+      //fetch(contentSyncUrl)
+
+      return raynData;
+    } catch (error) {
+      console.error("Error fetching Rayn data:", error);
+    }
+  }
+
+  // Function to get raynData from localStorage
+  function getStoredRaynData() {
+    const raynData = localStorage.getItem("raynData");
+    return raynData ? JSON.parse(raynData) : null;
+  }
 }
 
 //let NRC know we're ready.
@@ -1356,13 +1418,3 @@ if (window.location.hostname.includes("advertorial.nrc.nl")) {
   };
   initAdhese();
 }
-
-//create this script: <script src="https://wrappers.prod.rayn.io/connections/dcf0ca5c-c6a5-4e74-ad5f-fc582b2fb67d/bundle.js" type="module"></script>
-//to load the rayn.io script
-
-(function(){
-  var script = document.createElement('script');
-  script.src = 'https://wrappers.prod.rayn.io/connections/dcf0ca5c-c6a5-4e74-ad5f-fc582b2fb67d/bundle.js';
-  script.type = 'module';
-  document.head.appendChild(script);
-})();
