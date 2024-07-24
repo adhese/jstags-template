@@ -9,7 +9,7 @@ mkdir -p build
 
 if [ -z "$customers" ]; then
   echo "customers env variable not specified"
-  CUSTOMERS=$(make -s print-customers)
+  CUSTOMERS=$(find . -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -vE "build|libraries|sdk")
 else
   CUSTOMERS="$customers"
 fi
@@ -17,11 +17,13 @@ fi
 function build_makefile() {
   make init
   for customer in $CUSTOMERS; do
-    make "$customer-release"
-    # copy local dist to global dist
-    if [[ -d "${customer}/dist" ]] && [[ -n "$(ls -A "${customer}/dist")" ]]; then
-      mkdir -p "build/release/${customer}"
-      cp -r "${customer}"/dist/* "build/release/${customer}/"
+    if [[ " $(make -s print-customers) " == *" $customer "* ]]; then
+      make "$customer-release"
+      # copy local dist to global dist
+      if [[ -d "${customer}/dist" ]] && [[ -n "$(ls -A "${customer}/dist")" ]]; then
+        mkdir -p "build/release/${customer}"
+        cp -r "${customer}"/dist/* "build/release/${customer}/"
+      fi
     fi
   done
 
