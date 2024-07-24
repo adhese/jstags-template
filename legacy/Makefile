@@ -119,3 +119,19 @@ unibet-release:
 
 gamemania-release:
 	cp gamemania/src/config.js gamemania/dist/config.js
+
+hardwareluxx-release:
+	terser --compress --mangle --verbose --ecma 5 --output hardwareluxx/dist/config.js -- sdk/src/*.js sdk/src/detection/Detection.js sdk/src/ajax/*.js sdk/src/events/*.js  sdk/src/Helper.js sdk/src/safeframe/SafeFrame.js sdk/src/safeframe/js/lib/base.js sdk/src/safeframe/js/host/host.js sdk/src/safeframe/js/lib/boot.js sdk/src/safeframe/js/ext/ext.js hardwareluxx/src/config.js
+
+marktplaats-release:
+	cat marktplaats/src/debug.html > marktplaats/dist/debug.html
+
+talpa-release:
+	terser --compress --mangle --verbose --ecma 5 --output talpa/dist/sync.min.js -- talpa/src/sync.js
+	terser --compress --mangle --verbose --ecma 5 --output talpa/dist/embed_jwp.min.js -- talpa/src/embed_jwp.js
+
+technologyinsider-release:
+	terser --compress --mangle --verbose --ecma 5 --output technologyinsider/dist/config.js -- technologyinsider/src/config.js
+
+tmg-3pas:
+	uglifyjs tmg/src/adhese_3pas.js -m -c -v -o tmg/dist/adhese_3pas.js
