@@ -3,8 +3,7 @@ name: Publish legacy
 on:
   push:
     branches:
-      - master
-
+      - main
   workflow_dispatch:
     inputs:
       customers:
@@ -39,7 +38,7 @@ jobs:
         if [ -n "${{ inputs.customers }}" ]; then
           echo "customers=${{ inputs.customers }}" >> ${GITHUB_OUTPUT}
         else
-          echo "customers=$(make -s print-customers | jq --raw-input --slurp --compact-output 'split(" ")[:-1]')" >> ${GITHUB_OUTPUT}
+          echo "customers=$(find . -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -vE "build|libraries|sdk" | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
         fi
 
     - id: env
