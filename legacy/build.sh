@@ -17,17 +17,17 @@ fi
 function build_makefile() {
   make init
   for customer in $CUSTOMERS; do
+    mkdir -p "build/release/${customer}"
     if [[ " $(make -s print-customers) " == *" $customer "* ]]; then
       make "$customer-release"
       # copy local dist to global dist
       if [[ -d "${customer}/dist" ]] && [[ -n "$(ls -A "${customer}/dist")" ]]; then
-        mkdir -p "build/release/${customer}"
         cp -r "${customer}"/dist/* "build/release/${customer}/"
       fi
     fi
   done
 
-  for customer in $(find ./* -maxdepth 1 -mindepth 1 -type d -name 'static' | cut -d '/' -f2); do
+  for customer in $CUSTOMERS; do
     # copy local static to global static
     if [[ -d "${customer}/static" ]] && [[ -n "$(ls -A "${customer}/static")" ]]; then
       mkdir -p "build/static/${customer}"
