@@ -29,8 +29,8 @@ function build_makefile() {
 
   for customer in $CUSTOMERS; do
     # copy local static to global static
+    mkdir -p "build/static/${customer}"
     if [[ -d "${customer}/static" ]] && [[ -n "$(ls -A "${customer}/static")" ]]; then
-      mkdir -p "build/static/${customer}"
       cp -r "${customer}"/static/* "build/static/${customer}/"
     fi
   done
