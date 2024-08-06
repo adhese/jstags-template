@@ -2,8 +2,6 @@
 
 set -e
 
-cd "$(dirname "$0")"
-
 echo "This script is intended for Github Actions only. Do not run it locally."
 
 if [ -z "$customers" ]; then

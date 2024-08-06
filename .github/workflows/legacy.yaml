@@ -36,7 +36,7 @@ jobs:
     - id: customers
       run: |
         if [ -n "${{ inputs.customers }}" ]; then
-          echo "customers=${{ inputs.customers }}" >> ${GITHUB_OUTPUT}
+          echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
         else
           echo "customers=$(find . -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -vE "build|libraries|sdk" | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
         fi
@@ -78,7 +78,7 @@ jobs:
       - name: Publish package
         run: |
           npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
-          ./push_tag_to_npm.sh
+          ../push_tag_to_npm.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           customers: ${{ matrix.customer }}

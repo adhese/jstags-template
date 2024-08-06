@@ -1,3 +1,6 @@
 [submodule "legacy/sdk"]
 	path = legacy/sdk
 	url = https://github.com/adhese/sdk.git
+[submodule "legacy/libraries/postscribe"]
+	path = legacy/libraries/postscribe
+	url = https://github.com/krux/postscribe.git
