@@ -36,7 +36,7 @@ jobs:
     - id: customers
       run: |
         if [ -n "${{ inputs.customers }}" ]; then
-          echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | jq --raw-input --slurp --compact-output 'split(" ")[:-1]')" >> ${GITHUB_OUTPUT}
+          echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
         else
           echo "customers=$(find . -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | grep -vE "build|libraries|sdk" | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
         fi
