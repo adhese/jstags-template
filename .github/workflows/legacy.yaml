@@ -78,7 +78,7 @@ jobs:
       - name: Publish package
         run: |
           npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
-          ./push_tag_to_npm.sh
+          ../push_tag_to_npm.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           customers: ${{ matrix.customer }}
