@@ -1,10 +1,9 @@
 {
-  "name": "$NAME",
+  "name": "jstags-demo",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build"
   },
-  "version": "$VERSION",
   "devDependencies": {
     "terser": "^5.31.1",
     "typescript": "^5.4.5",
@@ -12,14 +11,5 @@
   },
   "dependencies": {
     "@adhese/sdk": "^1.0.2"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "repository": {
-    "url": "git+https://github.com/$REPOSITORY.git"
-  },
-  "files": [
-    "Adhese.js"
-  ]
+  }
 }
