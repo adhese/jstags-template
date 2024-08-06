@@ -26,7 +26,7 @@ Supported types of jstags:
 * NPM-based
 * Makefile-based (legacy)
 
-### NPM-ased jstags
+### NPM-based jstags
 All the build process is managed with NPM `package.json` file.
 * All the dependencies are pulled from the NPM repo (no need to rely on the `sdk` git submodule).
 * `npm run build` is supposed to generate a build artifact in `customers/$customer/dist`.
