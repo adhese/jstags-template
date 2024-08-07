@@ -1,7 +1,7 @@
 ignore:
 #
 
-CUSTOMERS := adswag betsson bionic businessinsider candid cavai dazn dpgmedia gamemania groupm igmn mannenmedia massarius newskoolmedia nrcmedia ster unibet hardwareluxx technologyinsider
+CUSTOMERS := adswag betsson bionic businessinsider candid cavai dazn gamemania groupm igmn massarius newskoolmedia nrcmedia ster unibet hardwareluxx technologyinsider
 
 RELEASES := $(CUSTOMERS:%=%-release)
 
@@ -25,21 +25,6 @@ ster-release:
 
 ster-3pas:
 	uglifyjs ster/src/adhese_3pas.js -m -c -v -o ster/dist/adhese_3pas.js
-
-dpgmedia-3pas:
-	uglifyjs dpgmedia/src/adhese_3pas.js -m -c -v -o dpgmedia/dist/adhese_3pas.js
-
-dpgmedia-release:
-	uglifyjs sdk/src/*.js sdk/src/detection/Detection.js sdk/src/ajax/*.js sdk/src/events/*.js  sdk/src/safeframe/SafeFrame.js sdk/src/safeframe/js/lib/base.js sdk/src/safeframe/js/host/host.js sdk/src/safeframe/js/lib/boot.js sdk/src/safeframe/js/ext/ext.js  dpgmedia/src/adhese.js -m -c -v -o dpgmedia/dist/tag.js
-	uglifyjs sdk/src/*.js sdk/src/detection/Detection.js sdk/src/ajax/*.js sdk/src/events/*.js  sdk/src/safeframe/SafeFrame.js sdk/src/safeframe/js/lib/base.js sdk/src/safeframe/js/host/host.js sdk/src/safeframe/js/lib/boot.js sdk/src/safeframe/js/ext/ext.js  dpgmedia/src/adhese.js -b -v -o dpgmedia/dist/tag.src.js
-	cat dpgmedia/src/tweakers-debug.html > dpgmedia/dist/tweakers-debug.html
-	cat dpgmedia/src/debug.html > dpgmedia/dist/debug.html
-	cat dpgmedia/src/audiencecheck.html > dpgmedia/dist/audiencecheck.html
-
-mannenmedia-release:
-	terser --compress --mangle --verbose --ecma 5 --output mannenmedia/dist/config_v2.js -- mannenmedia/src/prebid.js mannenmedia/src/sdk.js mannenmedia/src/a9.js mannenmedia/src/config_v2.js
-	cp mannenmedia/src/config_v2.js mannenmedia/dist/config_v2.src.js
-	terser --compress --mangle --verbose --ecma 5 --output mannenmedia/dist/config_bigtruck.js -- mannenmedia/src/prebid.js mannenmedia/src/sdk.js mannenmedia/src/a9.js mannenmedia/src/config_bigtruck.js
 
 bionic-release:
 	terser --compress --mangle --verbose --output bionic/dist/project_on.min.js -- sdk/src/*.js sdk/src/detection/Detection.js sdk/src/ajax/*.js sdk/src/events/*.js  sdk/src/Helper.js sdk/src/safeframe/SafeFrame.js sdk/src/safeframe/js/lib/base.js sdk/src/safeframe/js/host/host.js sdk/src/safeframe/js/lib/boot.js sdk/src/safeframe/js/ext/ext.js bionic/src/project_on.js
