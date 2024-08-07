@@ -4,6 +4,20 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      customers:
+        description: 'Space separated customers names'
+        type: string
+        required: true
+      env:
+        description: 'Env to publish for'
+        type: choice
+        default: 'prod'
+        required: true
+        options:
+          - 'prod'
+          - 'test'
 
 jobs:
   set-variables:
@@ -15,7 +29,16 @@ jobs:
       uses: actions/checkout@v4
 
     - id: customers
-      run: echo "customers=$(ls customers/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
+      run: |
+        if [ -n "${{ inputs.customers }}" ]; then
+          echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
+        else
+          echo "customers=$(ls customers/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
+        fi
+
+    - id: env
+      run:
+        echo "env=${{ inputs.env || 'prod' }}" >> ${GITHUB_OUTPUT}
 
     - id: version
       run:
@@ -62,4 +85,5 @@ jobs:
           repository: "git+https://github.com/${{ github.repository }}"
           version: ${{ needs.set-variables.outputs.version }}
           package_name_prefix: ${{ github.event.repository.name }}-
+          env: ${{ needs.set-variables.outputs.env }}
         working-directory: customers
