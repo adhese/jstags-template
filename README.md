@@ -19,7 +19,7 @@ Usually it's Adhese [sdk](https://github.com/adhese/sdk_typescript) `tag.js` wit
    ```
 2. To synchronize with the upstream changes run:
    ```
-    git fetch template && git merge template/main
+    git fetch template && git merge template/legacy
     ```
 
 ## Structure
