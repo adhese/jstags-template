@@ -6,6 +6,7 @@ Usually it's Adhese [sdk](https://github.com/adhese/sdk_typescript) `tag.js` wit
 ## Init
 1. Fork `adhese/jstags-template` repo as `jstags` into your organisation eg. `your-org/jstags`
 2. Clone your fork locally
+3. Give `adhese-ci` GitHub user access to the forked repo
  
 ## Working with the upstream and the forked repos
 - All the customer-related changes should be committed to the forked repo
