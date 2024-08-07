@@ -51,7 +51,7 @@ There's a number of files that break this rule - it's all legacy files that were
 ## Proposed workflow
 1. Make a PR with jstag changes for customer `xyz`
 2. Deploy to test
-   * Run `Publish` GitHub action with parameters:
+   * Run `Publish` (or `Publish legacy`) GitHub action with parameters:
       * branch: your-pr-branch
       * customer: `xyz`
       * env: `test`
@@ -62,11 +62,11 @@ There's a number of files that break this rule - it's all legacy files that were
 
 ## Adding a new customer
 1. Add the new dir structure and files for the new customer
-2. Run the `Publish` GitHub action
+2. Run the `Publish` (or `Publish legacy`) GitHub action
 3. Declare (or ask Adhese support to) the new customer in the jstags config in the [Projects repo](https://github.com/adhese/projects/blob//jstags/config.json)
 
 ## Publish process - technicalities
-The `Publish` github action:
+The `Publish` (or `Publish legacy`) GitHub action:
 * builds the artifact
 * converts it to an NPM package
 
