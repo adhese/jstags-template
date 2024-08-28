@@ -389,8 +389,14 @@ AdheseGateway.createAdContainer = function (
   adContainer.style.height = height + "px";
   adContainer.style.margin = "0 auto";
   adContainer.style.display = "block";
-  var parentElement = document.getElementById(parentId);
-  parentElement.appendChild(adContainer);
+  if (!document.getElementById(parentId)) {
+    AdheseGateway.logger("parent container not found: " + parentId);
+    return;
+  } else {
+    AdheseGateway.logger("parent container found: " + parentId);
+    var parentElement = document.getElementById(parentId);
+    parentElement.appendChild(adContainer);
+  }
 };
 
 AdheseGateway.lazyloadQueue = [];
