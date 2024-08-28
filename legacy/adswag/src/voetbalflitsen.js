@@ -419,7 +419,12 @@ AdheseGateway.handleLazyLoad = function (ad, containerId) {
   }, options);
 
   var container = document.getElementById(containerId);
-  observer.observe(container);
+  if (!container) {
+    AdheseGateway.logger("container not found: " + containerId);
+    return;
+  } else {
+    observer.observe(container);
+  }
 };
 
 AdheseGateway.handleAdheseResponse = function (response, slots, ArmpConfig) {
