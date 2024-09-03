@@ -1,7 +1,7 @@
 ignore:
 #
 
-CUSTOMERS := adswag betsson bionic businessinsider candid cavai dazn gamemania groupm igmn massarius newskoolmedia nrcmedia ster unibet hardwareluxx technologyinsider
+CUSTOMERS := adswag betsson bionic businessinsider candid cavai dazn drankgigant gamemania groupm igmn massarius newskoolmedia nrcmedia ster unibet hardwareluxx technologyinsider
 
 RELEASES := $(CUSTOMERS:%=%-release)
 
@@ -120,3 +120,6 @@ technologyinsider-release:
 
 tmg-3pas:
 	uglifyjs tmg/src/adhese_3pas.js -m -c -v -o tmg/dist/adhese_3pas.js
+
+drankgigant-release:
+	cp drankgigant/src/config-acceptance.js drankgigant/dist/config-acceptance.js
