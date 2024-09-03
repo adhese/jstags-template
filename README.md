@@ -19,22 +19,39 @@ Usually it's Adhese [sdk](https://github.com/adhese/sdk_typescript) `tag.js` wit
    ```
 2. To synchronize with the upstream changes run:
    ```
-    git fetch template && git merge template/main
+    git fetch template && git merge template/legacy
     ```
 
 ## Structure
 Supported types of jstags:
 * NPM-based
+* Makefile-based (legacy)
 
 ### NPM-based jstags
 All the build process is managed with NPM `package.json` file.
 * All the dependencies are pulled from the NPM repo.
 * `npm run build` is supposed to generate a build artifact in `customers/$customer/dist`.
 
+### Makefile-based jstags
+
+#### Dir structure
+```
+legacy/$customer
+├── src        - sources that get processed by the `$customer-release` job in the Makefile
+├── dist       - outputs of the `$customer-release` job (it's all .gitignored!)
+└── static     - static files that should get deployed "as is"
+```
+
+In `Makefile` there should be a task `$customer-release`. It should put all its outputs to the `$customer/dist` directory.
+The `dist` and `static` dirs are merged and published together.
+
+**Note: Do not place any `.js` files in `static` dir!*** All the `.js` all should go through the Makefile pipeline (eg. to get minified).
+There's a number of files that break this rule - it's all legacy files that were placed directly on s3, and there's no `Makefile` job for them.
+
 ## Proposed workflow
 1. Make a PR with jstag changes for customer `xyz`
 2. Deploy to test
-   * Run `Publish` GitHub action with parameters:
+   * Run `Publish` (or `Publish legacy`) GitHub action with parameters:
       * branch: your-pr-branch
       * customer: `xyz`
       * env: `test`
@@ -45,11 +62,11 @@ All the build process is managed with NPM `package.json` file.
 
 ## Adding a new customer
 1. Add the new dir structure and files for the new customer
-2. Run the `Publish` GitHub action
+2. Run the `Publish` (or `Publish legacy`) GitHub action
 3. Declare (or ask Adhese support to) the new customer in the jstags config in the [Projects repo](https://github.com/adhese/projects/blob//jstags/config.json)
 
 ## Publish process - technicalities
-The `Publish` github action:
+The `Publish` (or `Publish legacy`) GitHub action:
 * builds the artifact
 * converts it to an NPM package
 

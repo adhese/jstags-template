@@ -1,0 +1,38 @@
+<VAST xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd" version="3.0">
+    <Ad id="1234567">
+        <InLine>
+            <AdSystem>Adhese</AdSystem>
+            <AdTitle>Linear VPAID</AdTitle>
+            <Description></Description>
+            <Error></Error>
+            <Impression><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Impression>
+            <Creatives>
+                <Creative sequence="1">
+                    <Linear>
+                        <Duration>00:00:10</Duration>
+                        <TrackingEvents>
+                            <Tracking event="start"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-start/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                            <Tracking event="firstQuartile"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-firstQuartile/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-midpoint/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                            <Tracking event="thirdQuartile"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-thirdQuartile/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                            <Tracking event="complete"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-complete/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                            <Tracking event="close"><![CDATA[https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>-close/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]]]></Tracking>
+                        </TrackingEvents>
+                        <AdParameters><![CDATA[
+                        {"vastUrl":"https://track.adform.net/serving/videoad/?bn=54058712&v=3&ord=","clickTag":"https://redirect.com","impression":"https://ads-adswag.adhese.com/track/<ADHESE_CREATIVE_ID>/[adheseRequestDataFlat]/?t=[adheseTimestampNowMs]"}
+                        ]]></AdParameters>
+                        <VideoClicks>
+                            <ClickThrough id="1"><![CDATA[https://adhese.com]]]></ClickThrough>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile apiFramework="VPAID" type="application/javascript">
+<![CDATA[https://pool-adswag.adhese.com/tag/vpaid.js]]>
+                            </MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+                <Creative sequence="1"></Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>
