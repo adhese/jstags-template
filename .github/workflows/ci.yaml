@@ -67,9 +67,6 @@ jobs:
           cache-dependency-path: 'vite/package-lock.json'
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Setup node auth
-        run: npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
-
       - name: Install dependencies
         run: npm ci
         working-directory: vite
@@ -77,6 +74,9 @@ jobs:
       - name: Build package
         run: env=${{ needs.set-variables.outputs.env }} customers=${{ matrix.customer }} npm run build
         working-directory: vite
+
+      - name: Setup node auth
+        run: npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
 
       - name: Publish package
         run: ../push_tag_to_npm.sh
