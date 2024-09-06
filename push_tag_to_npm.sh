@@ -33,8 +33,8 @@ publish_to_npm() {
     exit 1
   fi
 
-  if [[ -f "$CUSTOMER/package.json" ]]; then
-    pushd "$CUSTOMER/dist" >/dev/null
+  if [[ -f "package.json" ]]; then
+    pushd "dist/$CUSTOMER" >/dev/null
   else
     pushd "build/all/$CUSTOMER" >/dev/null
   fi

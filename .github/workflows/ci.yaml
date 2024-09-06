@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       customers: ${{ steps.customers.outputs.customers }}
+      env: ${{ steps.env.outputs.env }}
+      version: ${{ steps.version.outputs.version }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -33,7 +35,7 @@ jobs:
         if [ -n "${{ inputs.customers }}" ]; then
           echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
         else
-          echo "customers=$(ls customers/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
+          echo "customers=$(ls vite/customers/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
         fi
 
     - id: env
@@ -62,21 +64,21 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'customers/${{ matrix.customer }}/package-lock.json' # THIS PATTERN did the trick for me.
-          registry-url: 'https://npm.pkg.github.com'
+          cache-dependency-path: 'vite/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
-        working-directory: customers/${{ matrix.customer }}
+        working-directory: vite
 
       - name: Build package
-        run: npm run build
-        working-directory: customers/${{ matrix.customer }}
+        run: env=${{ needs.set-variables.outputs.env }} customers=${{ matrix.customer }} npm run build
+        working-directory: vite
+
+      - name: Setup node auth
+        run: npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
 
       - name: Publish package
-        run: |
-          npm set "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}"
-          ../push_tag_to_npm.sh
+        run: ../push_tag_to_npm.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           customers: ${{ matrix.customer }}
@@ -86,4 +88,4 @@ jobs:
           version: ${{ needs.set-variables.outputs.version }}
           package_name_prefix: ${{ github.event.repository.name }}-
           env: ${{ needs.set-variables.outputs.env }}
-        working-directory: customers
+        working-directory: vite

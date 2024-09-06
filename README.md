@@ -9,8 +9,8 @@ Usually it's Adhese [sdk](https://github.com/adhese/sdk_typescript) `tag.js` wit
 3. Give `adhese-ci` GitHub user access to the forked repo
  
 ## Working with the upstream and the forked repos
-- All the customer-related changes should be committed to the forked repo
-- All the github actions build/release script updates should be committed to the forked repo
+- Customer -related change? -> merge to your fork `your-org/jstags`
+- Github actions build/release script -related updates? -> make a PR in `adhese/jstags-template`
 
 ## Keeping up-to-date with the upstream repo
 1. (one time action) Add `template` as a remote:
@@ -24,13 +24,39 @@ Usually it's Adhese [sdk](https://github.com/adhese/sdk_typescript) `tag.js` wit
 
 ## Structure
 Supported types of jstags:
-* NPM-based
+* NPM-based (`vite` dir)
 * Makefile-based (legacy)
 
-### NPM-based jstags
-All the build process is managed with NPM `package.json` file.
+### NPM-based jstags (`vite` dir)
+All the build process is managed with NPM `vite/package.json` file.
 * All the dependencies are pulled from the NPM repo.
-* `npm run build` is supposed to generate a build artifact in `customers/$customer/dist`.
+* `npm run build` is supposed to generate a build artifact in `vite/dist/$customer`.
+
+## Dir structure
+```
+├── common                  # resources shared between multiple customers 
+│   ├── partials              # html templates/partials
+│   └── src                   # generic *.ts utils
+├── customers               
+│   ├── customerx             # files specific for customerx
+│   │   ├── bye.html
+│   │   ├── hello.html
+│   │   └── src
+│   └── customery             # files specific for customery
+│       ├── hello.html
+│       └── src
+```
+## Build setup
+Single customer file-structure could look like:
+```
+├── bye.html      
+├── hello.html     # html file to be published at https://pool-customerx.adhese.com/tag/hello.html
+└── src
+    ├── _bye.ts    # private resource, it won't be available at any predictable url
+    ├── _hello.ts  
+    ├── lib.ts     # js lib to be published at https://pool-customerx.adhese.com/tag/lib.js    
+    └── tag.ts
+```
 
 ### Makefile-based jstags
 
