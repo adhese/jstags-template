@@ -1,0 +1,18 @@
+{
+  "name": "jstags-vite",
+  "type": "module",
+  "scripts": {
+    "build": "npm run clean && node vite.config.mjs",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "glob": "^11.0.0",
+    "prebid.js": "^8.46.0",
+    "terser": "^5.31.1",
+    "vite": "^5.3.1",
+    "vite-plugin-handlebars": "^2.0.0"
+  },
+  "dependencies": {
+    "@adhese/sdk": "^1.1.4"
+  }
+}
