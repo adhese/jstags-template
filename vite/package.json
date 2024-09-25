@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "build": "npm run clean && node vite.config.mjs",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "serve": "cd dist && npx vite preview -c ../preview.config.js --base /tag --outDir"
   },
   "devDependencies": {
     "glob": "^11.0.0",
