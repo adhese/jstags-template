@@ -3,12 +3,10 @@
   "type": "module",
   "scripts": {
     "build": "npm run clean && node vite.config.mjs",
-    "clean": "rm -rf dist",
-    "serve": "cd dist && npx vite preview -c ../preview.config.js --base /tag --outDir"
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "glob": "^11.0.0",
-    "http-server": "^14.1.1",
     "prebid.js": "^8.46.0",
     "terser": "^5.31.1",
     "vite": "^5.3.1",
