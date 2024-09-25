@@ -30,7 +30,7 @@ Supported types of jstags:
 All the build process is managed with NPM `vite/package.json` file.
 * All the dependencies are pulled from the NPM repo.
 * `npm run build` is supposed to generate a build artifact in `vite/dist/$customer`.
-* `npm run serve --customer customerx` will start a dev http server and host customer resources at `http://localhost:8080/tag/resource_name.here`
+* `npm run serve [customer_name]`, eg. `npm run serve customerx` will start a dev http server and host customer resources at `http://localhost:8080/tag/resource_name.here`
 
 ## Dir structure
 ```

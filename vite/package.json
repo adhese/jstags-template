@@ -4,7 +4,7 @@
   "scripts": {
     "build": "npm run clean && node vite.config.mjs",
     "clean": "rm -rf dist",
-    "serve": "cd dist && ln -sfn ${npm_config_customer} tag && npx http-server"
+    "serve": "cd dist && npx vite preview -c ../preview.config.js --base /tag --outDir"
   },
   "devDependencies": {
     "glob": "^11.0.0",
