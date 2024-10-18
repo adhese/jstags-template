@@ -2,18 +2,22 @@
   "name": "jstags-vite",
   "type": "module",
   "scripts": {
-    "build": "npm run clean && node vite.config.mjs",
-    "clean": "rm -rf dist",
-    "serve": "cd dist && npx vite preview -c ../preview.config.js --base /tag --outDir"
+    "prebuild": "rimraf dist",
+    "build": "node build.mjs",
+    "start": "vite serve"
   },
   "devDependencies": {
+    "@adhese/sdk-devtools": "^1.0.1",
+    "@types/node": "^22.7.5",
+    "esbuild": "^0.24.0",
     "glob": "^11.0.0",
     "prebid.js": "^8.46.0",
+    "rimraf": "^6.0.1",
     "terser": "^5.31.1",
     "vite": "^5.3.1",
     "vite-plugin-handlebars": "^2.0.0"
   },
   "dependencies": {
-    "@adhese/sdk": "^1.1.4"
+    "@adhese/sdk": "1.2"
   }
 }
