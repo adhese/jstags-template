@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "node build.mjs",
+    "build": "NODE_ENV=production node build.mjs",
     "start": "vite serve"
   },
   "devDependencies": {

@@ -49,6 +49,9 @@ customers.forEach(async (customer) => {
         rollupOptions: {
           input: htmlFiles,
         },
+      },
+      define: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }
     });
   }
@@ -71,6 +74,9 @@ customers.forEach(async (customer) => {
       build: {
         ...commonBuildConfig,
         lib: libConfig
+      },
+      define: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       }
     });
   });
