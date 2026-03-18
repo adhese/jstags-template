@@ -31,9 +31,11 @@ jobs:
       uses: actions/checkout@v4
 
     - id: customers
+      env:
+        CUSTOMERS_INPUT: ${{ inputs.customers }}
       run: |
-        if [ -n "${{ inputs.customers }}" ]; then
-          echo "customers=$(echo "${{ inputs.customers }}" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
+        if [ -n "$CUSTOMERS_INPUT" ]; then
+          echo "customers=$(echo "$CUSTOMERS_INPUT" | tr -s ' ' | tr -d '\n' | jq --raw-input --slurp --compact-output 'split(" ")')" >> ${GITHUB_OUTPUT}
         else
           echo "customers=$(ls vite/customers/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> ${GITHUB_OUTPUT}
         fi
